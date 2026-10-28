@@ -1,0 +1,14 @@
+{
+  "sample": {
+    "family": "Allow: science, animals, dinosaurs, drawing, math, other clearly educational content.\nAsk me first: gaming, unboxing, and prank videos. These categories must be ask_parent by default; do not block them solely because they are gaming or pranks.\nBlock gaming or prank videos only when the available evidence also shows violence, weapons, scary or horror content, profanity, or adult themes.\nNever allow: violence, weapons, scary or horror content, profanity, adult themes.",
+    "child": null
+  },
+  "strict_family": {
+    "family": "Block any MrBeast channel, any Minecraft-related channel, and all gaming videos where someone plays and talks over a game.\nAllow educational science and animals.\nAsk parent for unboxing and prank videos unless they also show violence or scary content.\nNever allow violence, weapons, or horror.",
+    "child": "Allow educational science, animals, drawing, and nature.\nAsk_parent for unboxing.\nNever allow scary or violent content."
+  },
+  "lenient": {
+    "family": "Allow educational gaming and playful channels if they are not scary or violent.\nAsk_parent for unboxing if the title suggests the video is a challenge or prank.\nNo blanket gaming block.",
+    "child": "Allow science, animals, drawing, and general creativity.\nDo not ask for harmless gaming or challenge content unless it becomes scary or violent."
+  }
+}

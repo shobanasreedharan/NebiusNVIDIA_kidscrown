@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">KidsCrownProbe</string>
+    <string name="service_description">KidsCrown Probe reads on-screen text in YouTube only, to test whether the selected video can be identified.</string>
+</resources>

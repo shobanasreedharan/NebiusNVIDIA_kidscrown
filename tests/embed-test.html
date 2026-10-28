@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KidsCrown embed test</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 1rem; line-height: 1.5; color: #1c2245; background: #f6f7fb; }
+    main { max-width: 40rem; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin: 0 0 .5rem; }
+    h2 { font-size: 1.1rem; margin: 1.5rem 0 .25rem; }
+    input { width: 100%; box-sizing: border-box; font: inherit; padding: .7rem; border: 1.5px solid #b3badb; border-radius: 10px; }
+    button { font: inherit; font-weight: 700; padding: .7rem 1.2rem; margin-top: .6rem; border: 0; border-radius: 10px; background: #1d2559; color: #fff; }
+    .player { position: relative; aspect-ratio: 16 / 9; background: #dfe3f2; border-radius: 10px; overflow: hidden; }
+    .player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .note { color: #565e82; font-size: .95rem; }
+    #message { color: #a11d1d; font-weight: 600; min-height: 1.5em; }
+    ol { padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>KidsCrown embed test</h1>
+  <p class="note">Paste the link to a video you know allows embedding (a video from a large kids' channel usually does). Then load it and watch for the things listed at the bottom.</p>
+
+  <label for="link">YouTube link</label>
+  <input id="link" type="text" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…">
+  <button id="load" type="button">Load video</button>
+  <p id="message" role="alert"></p>
+
+  <h2>A. Standard embed</h2>
+  <div class="player" id="player-a"></div>
+
+  <h2>B. Locked-down embed</h2>
+  <p class="note">Same player, but the page forbids it from opening new windows or navigating away.</p>
+  <div class="player" id="player-b"></div>
+
+  <h2>What to look for, on each player</h2>
+  <ol>
+    <li>Does it show the video and play when you press play?</li>
+    <li>Tap the video title or the YouTube logo. Does it leave this page, open a new tab, or do nothing?</li>
+    <li>Let the video finish (or skip near the end). Does it offer other videos to tap?</li>
+    <li>Is there an error message? (For example "Error 153".)</li>
+    <li>Does it work in the Chrome settings that allow only approved sites, with this page approved?</li>
+  </ol>
+</main>
+
+<script>
+  // Pulls the 11-character video ID out of a pasted link, or accepts a bare ID.
+  function videoId(text) {
+    const value = text.trim();
+    if (/^[A-Za-z0-9_-]{11}$/.test(value)) return value;
+    const match = value.match(/(?:v=|\/shorts\/|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  // Privacy-enhanced domain, autoplay off, only same-channel suggestions, and a referrer
+  // (embeds without one show "Error 153").
+  function player(id, locked) {
+    const frame = document.createElement("iframe");
+    frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=0&rel=0&playsinline=1";
+    frame.title = locked ? "Locked-down embed" : "Standard embed";
+    frame.allow = "fullscreen; picture-in-picture";
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = "strict-origin-when-cross-origin";
+    if (locked) frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation");
+    return frame;
+  }
+
+  document.getElementById("load").addEventListener("click", function () {
+    const message = document.getElementById("message");
+    const id = videoId(document.getElementById("link").value);
+    if (!id) {
+      message.textContent = "That doesn't look like a YouTube video link.";
+      return;
+    }
+    message.textContent = "";
+    document.getElementById("player-a").replaceChildren(player(id, false));
+    document.getElementById("player-b").replaceChildren(player(id, true));
+  });
+</script>
+</body>
+</html>

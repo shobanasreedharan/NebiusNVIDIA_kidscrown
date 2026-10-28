@@ -1,0 +1,13 @@
+.env
+*.db
+__pycache__/
+.pytest_cache/
+.venv/
+
+__pycache__/
+*.pyc
+.env
+*.db
+scripts/**/sample_videos_*.json
+
+.idea/
